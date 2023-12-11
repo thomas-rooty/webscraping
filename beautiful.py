@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 
+
 def show_beautiful():
   # Sample JSON data (replace with your JSON data)
   data = pd.read_json('dataframe.json').to_json(orient='records')

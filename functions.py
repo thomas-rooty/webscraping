@@ -2,9 +2,11 @@ import base64
 import requests
 import pandas as pd
 
+
 # Fetch the BDM website using a search parameter
 def search_on_bdm(param, page):
   return requests.get('https://www.blogdumoderateur.com/page/' + page + '/?s=' + param)
+
 
 # Build the dataframe from the returned results
 def build_json(search_result):
@@ -18,12 +20,14 @@ def build_json(search_result):
     } for article in search_result.find_all('article')
   }
 
+
 # Function that downloads the dataframe as a CSV file
 def download_csv(df):
   csv = df.to_csv(index=False)
   b64 = base64.b64encode(csv.encode()).decode()
   href = f'<a href="data:file/csv;base64,{b64}" download="bdm.csv">Download CSV file</a>'
   return href
+
 
 # Read the dataframe from the server
 def read_df():
