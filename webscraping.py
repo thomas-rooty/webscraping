@@ -1,6 +1,5 @@
 from functions import *
 import streamlit as st
-import pandas as pd
 import bs4
 import pandas as pd
 
@@ -31,7 +30,12 @@ def show_capybar_app():
    st.write('Nombre d\'articles trouvés: ', len(df.index))
 
    # Download CSV
-   st.markdown(download_csv(df), unsafe_allow_html=True)
+   st.download_button(
+       label="Télécharger les résultats au format CSV",
+       data=df.to_csv().encode('utf-8'),
+       file_name='dataframe.csv',
+       mime='text/csv',
+   )
 
    # Save dataframe as json in the server
    df.to_json('dataframe.json')
