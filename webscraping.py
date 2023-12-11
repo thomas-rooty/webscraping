@@ -5,10 +5,20 @@ import pandas as pd
 
 
 def show_capybar_app():
-  st.title("Capybar'App")
+  st.markdown("<h1 style='text-align: center;'>Capybar'App</h1>", unsafe_allow_html=True)
 
   # Sidebar with links to other pages
   st.sidebar.title("Capybar'App")
+
+  # Banner image
+  st.markdown(
+    """
+    <div style='text-align: center;'>
+      <img src='https://i.imgur.com/TWU2hzI.png' alt='Capybar'App' style='width: 25%;'>
+    </div>
+    """,
+    unsafe_allow_html=True
+  )
 
   # Text form
   search_param = st.text_input('Rechercher sur BDM', 'IA, Adobe, Tech, Dev, ...')
