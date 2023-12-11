@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def show_capybar_app():
-  st.markdown("<h1 style='text-align: center;'>Capybar'App</h1>", unsafe_allow_html=True)
+  st.markdown("<h1 style='text-align: center;'>Cliquez sur le Capybara pour voir mon profil</h1>", unsafe_allow_html=True)
 
   # Sidebar with links to other pages
   st.sidebar.title("Capybar'App")
@@ -14,7 +14,9 @@ def show_capybar_app():
   st.markdown(
     """
     <div style='text-align: center;'>
-      <img src='https://i.imgur.com/TWU2hzI.png' alt='Capybar'App' style='width: 25%;'>
+      <a href='https://github.com/thomas-rooty' target='_blank'>
+        <img src='https://i.imgur.com/TWU2hzI.png' alt='Capybar'App' style='width: 25%;'>
+      </a>
     </div>
     """,
     unsafe_allow_html=True
