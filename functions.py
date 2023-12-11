@@ -1,6 +1,6 @@
 import base64
 import requests
-
+import pandas as pd
 
 # Fetch the BDM website using a search parameter
 def search_on_bdm(param, page):
@@ -24,3 +24,7 @@ def download_csv(df):
   b64 = base64.b64encode(csv.encode()).decode()
   href = f'<a href="data:file/csv;base64,{b64}" download="bdm.csv">Download CSV file</a>'
   return href
+
+# Read the dataframe from the server
+def read_df():
+  return pd.read_json('dataframe.json')

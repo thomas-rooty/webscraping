@@ -2,6 +2,7 @@ from functions import *
 import streamlit as st
 import pandas as pd
 import bs4
+import pandas as pd
 
 def show_capybar_app():
  st.title("Capybar'App")
@@ -31,3 +32,6 @@ def show_capybar_app():
 
    # Download CSV
    st.markdown(download_csv(df), unsafe_allow_html=True)
+
+   # Save dataframe as json in the server
+   df.to_json('dataframe.json')
