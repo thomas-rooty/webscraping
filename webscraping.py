@@ -21,7 +21,7 @@ def show_capybar_app():
   )
 
   # Text form
-  search_param = st.text_input('Rechercher sur BDM', 'IA, Adobe, Tech, Dev, ...')
+  search_param = st.text_input('Rechercher sur BDM', placeholder='IA, Tech, Adobe, ...')
 
   # Number form
   page_nb = str(st.number_input('Page', min_value=1, max_value=100, value=1))
