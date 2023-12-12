@@ -1,59 +1,70 @@
+import os
 import streamlit as st
-from functions import *
+from functions import collect_dentists
 from db import DataBase
-import sqlalchemy as db
-from selenium.webdriver.common.by import By
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+# Constants and Environment Variables
+DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH", "./chromedriver.exe")
+BRAVE_PATH = os.getenv("BRAVE_BROWSER_PATH", "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe")
+DOCTOLIB_URL = "https://www.doctolib.fr/dentiste/"
 
 
+# Functions
+def initialize_browser():
+  options = Options()
+  options.binary_location = BRAVE_PATH
+  options.add_argument("--incognito")
+  # options.add_argument("--headless")  # Uncomment for headless mode
+  service = Service(executable_path=DRIVER_PATH)
+  return webdriver.Chrome(service=service, options=options)
+
+
+def accept_cookies(browser):
+  try:
+    cookie_button = browser.find_element(By.ID, "didomi-notice-agree-button")
+    cookie_button.click()
+  except Exception as e:
+    st.error("Error accepting cookies: " + str(e))
+
+
+def store_dentists_in_db(dentists, city):
+  database = DataBase()
+  try:
+    database.create_table('dentists', 'name', 'photo', 'address', 'city')
+  except Exception as e:
+    st.error("Database error: " + str(e))
+    return
+
+  for dentist in dentists:
+    database.add_row('dentists', **dentist, city=city)
+
+
+# Streamlit UI
 def show_nearby_dentists():
   st.title("Trouver votre dentiste chez vous !")
-
-  # Search bar with an action button
-  search_city = st.text_input("Pour des dents soinggg")
+  search_city = st.text_input("Enter a city name")
   search_button = st.button("Search")
 
-  # If the search button is clicked
   if search_button:
-    # Display search information
-    st.write("Searching for dentists in " + search_city + "...")
-    st.write("URL: https://www.doctolib.fr/dentiste/" + search_city)
+    st.write(f"Searching for dentists in {search_city}...")
+    url = DOCTOLIB_URL + search_city
+    st.write(f"URL: {url}")
 
-    # Init webdriver
-    driver_path = "./chromedriver.exe"
-    brave_path = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
-    option = webdriver.ChromeOptions()
-    option.binary_location = brave_path
-    option.add_argument("--incognito")
-    #option.add_argument("--headless")
-
-    # Specify service
-    service = Service(executable_path=driver_path)
-
-    # Create new Instance of Brave
-    browser = webdriver.Chrome(service=service, options=option)
-
-    # Open website
-    browser.get("https://www.doctolib.fr/dentiste/" + search_city)
-
-    # Agree with cookies
-    browser.find_element(By.ID, "didomi-notice-agree-button").click()
-
-    # Collect data
-    nearby_dentists = collect_dentists(browser)
-    st.write(nearby_dentists)
-
-    # Store them in db, create table dentists if not exists
-    database = DataBase()
+    browser = initialize_browser()
     try:
-      database.create_table('dentists', 'name', 'photo', 'addresse', 'city')
-    except:
-      pass
+      browser.get(url)
+      accept_cookies(browser)
+      dentists = collect_dentists(browser)
+      store_dentists_in_db(dentists, search_city)
+      st.write(dentists)
+    except Exception as e:
+      st.error("Error during scraping: " + str(e))
+    finally:
+      browser.quit()
 
-    # Populate DB with dentists
-    for dentist in nearby_dentists:
-      database.add_row('dentists', **dentist, city=search_city)
 
-    # Close the browser
-    browser.quit()
+show_nearby_dentists()
