@@ -37,7 +37,7 @@ def show_capybar_app():
 
     # Datafrane
     soup = bs4.BeautifulSoup(search_result.text)
-    json = build_json(soup)
+    json = build_json_bdm(soup)
     df = pd.DataFrame.from_dict(json, orient='index')
     st.write(df)
     st.write('Nombre d\'articles trouvés: ', len(df.index))

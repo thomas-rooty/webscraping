@@ -1,6 +1,8 @@
 import base64
 import requests
 import pandas as pd
+from time import sleep
+from selenium.webdriver.common.by import By
 
 
 # Fetch the BDM website using a search parameter
@@ -8,8 +10,13 @@ def search_on_bdm(param, page):
   return requests.get('https://www.blogdumoderateur.com/page/' + page + '/?s=' + param)
 
 
+# Fetch the Cdiscount website using a search parameter
+def search_on_cdiscount(param):
+  return requests.get('https://www.cdiscount.com/search/10/' + param + '.html#_his_')
+
+
 # Build the dataframe from the returned results
-def build_json(search_result):
+def build_json_bdm(search_result):
   return {
     article.get('id'): {
       'name': article.find('h3').text if article.find('h3') else 'No name available',
@@ -30,5 +37,28 @@ def download_csv(df):
 
 
 # Read the dataframe from the server
-def read_df():
+def read_bdm_df():
   return pd.read_json('dataframe.json')
+
+
+# Collect dentists data
+def collect_dentists(browser):
+  sleep(3)
+  practiciens = browser.find_elements(By.CLASS_NAME, "dl-search-result-presentation")
+  data = []
+  for elem in practiciens:
+    try:
+      # Get info about the dentist
+      name = elem.find_element(By.TAG_NAME, "h3").text
+      photo = elem.find_element(By.TAG_NAME, "img").get_attribute("src")
+      addresse = elem.find_element(By.TAG_NAME, "span").text
+
+      data.append({
+        "name": name,
+        "photo": photo,
+        "addresse": addresse
+      })
+    except Exception as e:
+      print(f"Error: {e}")
+      pass
+  return data
