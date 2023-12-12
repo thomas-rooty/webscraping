@@ -25,10 +25,12 @@ def show_dentists_beautiful():
   city_filter = st.text_input("Entrez la ville pour filtrer les dentistes :",
                               placeholder="Paris, Marseille, OM<PSG, ...")
 
+  num_dentists_to_display = st.slider("Nombre de dentistes à afficher", min_value=1, max_value=100, value=10)
+
   dentists = get_dentists_from_db(city_filter)
 
   # Use markdown to display the dentist beautifully
-  for dentist in dentists:
+  for dentist in dentists[:num_dentists_to_display]:
     st.markdown(f"""
         <div style="display: flex; align-items: center; margin-bottom: 1rem;">
             <img src="{dentist['photo']}" alt="{dentist['name']}" style="width: 100px; height: 100px; border-radius: 50%; margin-right: 1rem;" />
