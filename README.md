@@ -1,5 +1,5 @@
-# Note pour monsieur le professeur
-ATTENTION, j'ai utilisé Brave et non Chrome, il faudra donc modifier les premiers lignes dans les fichiers doctolib.py et les notebook Jupyter :
+# Note pour le formateur
+ATTENTION, j'ai utilisé Brave et non Chrome, il faudra donc modifier les premieres lignes dans les fichiers doctolib.py et les notebook Jupyter :
 
 Il suffit juste de pointer vers Chrome, ou d'enlever la ligne option.binary_location
 - doctolib.py : 
