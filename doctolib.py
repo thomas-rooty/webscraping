@@ -18,7 +18,7 @@ def initialize_browser():
   options = Options()
   options.binary_location = BRAVE_PATH
   options.add_argument("--incognito")
-  # options.add_argument("--headless")  # Uncomment for headless mode
+  options.add_argument("--headless")  # Uncomment for headless mode
   service = Service(executable_path=DRIVER_PATH)
   return webdriver.Chrome(service=service, options=options)
 
@@ -58,7 +58,7 @@ def show_nearby_dentists():
     browser = initialize_browser()
     try:
       browser.get(url)
-      accept_cookies(browser)
+      #accept_cookies(browser)
       dentists = collect_dentists(browser, num_pages, search_city)
       store_dentists_in_db(dentists, search_city)
       st.write(dentists)
