@@ -22,7 +22,6 @@ class DataBase():
       print(f'Table {name_table} created')
     else:
       print(f"Table '{name_table}' already exists.")
-      return
 
   def read_table(self, name_table, return_keys=False):
     table = db.Table(name_table, self.metadata, autoload_with=self.engine)

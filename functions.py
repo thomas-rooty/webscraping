@@ -42,23 +42,32 @@ def read_bdm_df():
 
 
 # Collect dentists data
-def collect_dentists(browser):
-  sleep(3)
-  practiciens = browser.find_elements(By.CLASS_NAME, "dl-search-result-presentation")
-  data = []
-  for elem in practiciens:
-    try:
-      # Get info about the dentist
-      name = elem.find_element(By.TAG_NAME, "h3").text
-      photo = elem.find_element(By.TAG_NAME, "img").get_attribute("src")
-      addresse = elem.find_element(By.TAG_NAME, "span").text
+def collect_dentists(browser, num_pages, search_city):
+  all_dentists = []
+  for page in range(1, num_pages + 1):
+    # Construct the URL for each page
+    page_url = f"https://www.doctolib.fr/dentiste/{search_city}?page={page}"
+    browser.get(page_url)
 
-      data.append({
-        "name": name,
-        "photo": photo,
-        "addresse": addresse
-      })
-    except Exception as e:
-      print(f"Error: {e}")
-      pass
-  return data
+    # Wait for the page to load
+    sleep(3)
+
+    # Find all practitioners on the current page
+    practiciens = browser.find_elements(By.CLASS_NAME, "dl-search-result-presentation")
+
+    for elem in practiciens:
+      try:
+        # Get info about the dentist
+        name = elem.find_element(By.TAG_NAME, "h3").text
+        photo = elem.find_element(By.TAG_NAME, "img").get_attribute("src")
+        addresse = elem.find_element(By.TAG_NAME, "span").text
+
+        all_dentists.append({
+          "name": name,
+          "photo": photo,
+          "addresse": addresse
+        })
+      except Exception as e:
+        print(f"Error on page {page}: {e}")
+
+  return all_dentists

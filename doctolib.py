@@ -46,11 +46,12 @@ def store_dentists_in_db(dentists, city):
 # Streamlit UI
 def show_nearby_dentists():
   st.title("Trouver votre dentiste chez vous !")
-  search_city = st.text_input("Enter a city name")
-  search_button = st.button("Search")
+  search_city = st.text_input("Enter a city name", placeholder="Paris, Marseille City, OM<PSG, ...")
+  num_pages = st.slider("Combien de page à prendre en compte ?", 1, 10, 1)
+  search_button = st.button("Lancer la recherche")
 
   if search_button:
-    st.write(f"Searching for dentists in {search_city}...")
+    st.write(f"Recherche des dentistes à {search_city} sur {num_pages} pages...")
     url = DOCTOLIB_URL + search_city
     st.write(f"URL: {url}")
 
@@ -58,7 +59,7 @@ def show_nearby_dentists():
     try:
       browser.get(url)
       accept_cookies(browser)
-      dentists = collect_dentists(browser)
+      dentists = collect_dentists(browser, num_pages, search_city)
       store_dentists_in_db(dentists, search_city)
       st.write(dentists)
     except Exception as e:
