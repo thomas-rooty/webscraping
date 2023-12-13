@@ -28,3 +28,9 @@ class ReviewsBoursoramaItem(scrapy.Item):
     atl = scrapy.Field()
     valeurOuverture = scrapy.Field()
     collectDatetime = scrapy.Field()
+
+
+class ReviewsMyAnimeListItem(scrapy.Item):
+    title = scrapy.Field()
+    img = scrapy.Field()
+    desc = scrapy.Field()

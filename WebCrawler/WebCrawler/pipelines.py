@@ -46,16 +46,6 @@ class DataBase():
         self.connection.execute(stmt)
         print(f'Row id added')
 
-    def delete_row_by_id(self, table, id_):
-        name_table = self.read_table(name_table)
-
-        stmt = (
-            db.delete(name_table).
-            where(students.c.id_ == id_)
-        )
-        self.connection.execute(stmt)
-        print(f'Row id {id_} deleted')
-
     def select_table(self, name_table):
         name_table = self.read_table(name_table)
         stm = db.select([name_table])
