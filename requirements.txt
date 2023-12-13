@@ -4,3 +4,6 @@ pandas~=2.1.4
 bs4~=0.0.1
 beautifulsoup4~=4.12.2
 SQLAlchemy==1.4.40
+Scrapy~=2.11.0
+itemadapter~=0.8.0
+selenium~=4.16.0
