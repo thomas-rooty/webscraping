@@ -10,5 +10,8 @@ Il suffit juste de pointer vers Chrome, ou d'enlever la ligne option.binary_loca
       option = webdriver.ChromeOptions()
       option.binary_location = brave_path  <-- Enlever cette ligne
       option.add_argument("--incognito")
+  
+# Erreur notebook Scrapy
+Attention, dans le notebook 4 pour Scrapy, certains imports ne fonctionnent pas avec Jupyter car les dossiers sont mal définis, passez directement par le projet Scrapy qui lui fonctionne !
 
 ![img.png](img.png)

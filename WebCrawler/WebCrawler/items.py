@@ -1,7 +1,6 @@
 import scrapy
 
 
-# À ajouter au fichier items.py
 class ReviewsAllocineItem(scrapy.Item):
     title = scrapy.Field()
     img = scrapy.Field()
@@ -21,7 +20,6 @@ class ReviewsAllocineItem(scrapy.Item):
         return self
 
 
-# À ajouter au fichier items.py
 class ReviewsBoursoramaItem(scrapy.Item):
     nomIndice = scrapy.Field()
     coursAction = scrapy.Field()
@@ -30,11 +28,3 @@ class ReviewsBoursoramaItem(scrapy.Item):
     atl = scrapy.Field()
     valeurOuverture = scrapy.Field()
     collectDatetime = scrapy.Field()
-
-    def clean_item(self):
-        for key, value in self.items():
-            if isinstance(value, str):
-                self[key] = value.strip().replace('\n', '')
-            elif isinstance(value, list):
-                self[key] = [item.strip() for item in value]
-        return self
