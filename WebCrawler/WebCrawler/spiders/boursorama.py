@@ -13,15 +13,16 @@ class BoursoramaSpider(scrapy.Spider):
     database = DataBase('boursorama')
 
     try:
-        database.create_table('boursorama',
-                              nomIndice=db.String,
-                              coursAction=db.String,
-                              variationAction=db.String,
-                              ath=db.String,
-                              atl=db.String,
-                              valeurOuverture=db.String,
-                              collectDatetime=db.String
-                              )
+        database.create_table(
+            'boursorama',
+            nomIndice=db.String,
+            coursAction=db.String,
+            variationAction=db.String,
+            ath=db.String,
+            atl=db.String,
+            valeurOuverture=db.String,
+            collectDatetime=db.String
+        )
     except:
         pass
 
