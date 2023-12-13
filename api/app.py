@@ -1,26 +1,34 @@
 import uvicorn
 from fastapi import FastAPI
+from db import *
 
 # Description
 description = """
-This is a simple API that returns the square of a number.
+API that returns scraped anime from MyAnimeList.net with filters.
 """
 
 app = FastAPI(
-    title="My First API",
+    title="MyAnimeAPI",
     description=description,
     version="0.0.1",
 )
 
+database = DataBase('myanimelist')
+
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Capybara"}
 
 
-@app.get("/square")
-async def square(num: int):
-    return {"square": num ** 2}
+@app.get("/animes")
+async def get_animes():
+    return database.select_table('myanimelist')
+
+
+@app.get("/animes/{letter}")
+async def get_animes_with_filter(letter: str):
+    return database.select_anime_starts_with('myanimelist', letter)
 
 
 if __name__ == "__main__":
