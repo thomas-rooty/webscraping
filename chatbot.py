@@ -11,15 +11,23 @@ def chatbot_page():
     if st.button("Envoyer"):
         try:
             if text.startswith('/'):
-                command, *args = text[1:].split(' ', 1)
-                args = args[0] if args else ""
+                parts = text[1:].split(' ', 2)  # Split into command and arguments
+                command = parts[0]
+                target_language = parts[1] if len(parts) > 1 else "English"  # Default to English
+                theme = parts[1] if len(parts) > 1 else None
+                args = parts[2] if len(parts) > 2 else parts[1] if len(parts) > 1 else None
 
                 if command == 'translate':
-                    result = textprocessor.openai_translate(args, "English")
+                    result = textprocessor.openai_translate(args, target_language)
                 elif command == 'summary':
                     result = textprocessor.openai_text_summary(args)
                 elif command == 'imagine':
                     result = textprocessor.openai_image(args)
+                elif command == 'actu':
+                    if theme:
+                        result = textprocessor.openai_text_generator(theme, args)
+                    else:
+                        result = "Veuillez spécifier un thème pour la commande /actu."
                 else:
                     result = 'Commande non reconnue'
 
