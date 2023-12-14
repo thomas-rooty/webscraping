@@ -1,10 +1,11 @@
 import openai
+import dotenv
 
 
 class TextProcessor:
     def __init__(self):
         self.openai = openai
-        self.openai.api_key = "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"
+        self.openai.api_key = dotenv.get_key('.env', 'OPENAI_API_KEY')
 
     def openai_translate(self, text, language):
         response = self.openai.Completion.create(
