@@ -1,5 +1,7 @@
 import openai
 import dotenv
+import requests
+import bs4
 
 
 class TextProcessor:
@@ -48,19 +50,6 @@ class TextProcessor:
 
         return reponse['choices'][0]['message']["content"]
 
-    def openai_codex(self, code):
-        response = self.openai.Completion.create(
-            engine="davinci-codex",
-            prompt=f"\"\"\"\n{code}\n\"\"\"\n\n",
-            temperature=0,
-            max_tokens=60,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
-            stop=["\n"]
-        )
-        return response.choices[0].text
-
     def openai_image(self, prompt):
         response = self.openai.Image.create(
             prompt=prompt,
@@ -68,3 +57,31 @@ class TextProcessor:
             size="512x512"
         )
         return response['data'][0]['url']
+
+    def openai_jsonify_a_url(self, url):
+        response = requests.get(url)
+        soup = bs4.BeautifulSoup(response.text, "html.parser")
+        body = soup.body
+        for tag in body(["script", "style", 'head', 'title', 'meta', 'header', 'footer', 'nav', 'aside']):
+            tag.decompose()
+
+        text = body.get_text()
+
+        # Limit the text to 5000 characters
+        text = text[:5000]
+
+        print(text)
+
+        # Ask OpenAI to summarize the text to only get whats important as a journalist, use engine gpt-3.5-turbo
+        response = self.openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system",
+                 "content": "Tu es un journaliste expert en web, tu dois synthetiser le texte que je vais te donner. Tu vas me repondre en json pour que je puisse l'afficher sur le site web. Je veux que tu me trouves tous les articles du json, leurs donnees (commentaires, heure, ...) et que tu me les affiches dans un dictionnaire json."},
+                {"role": "user",
+                 "content": "Voici la liste des actualités à synthétiser :" + text},
+            ],
+        )
+
+        # Return the jsonified text
+        return response['choices'][0]['message']["content"]

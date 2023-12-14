@@ -1,5 +1,6 @@
 import streamlit as st
 from openai_class import *
+import json
 
 
 def chatbot_page():
@@ -28,12 +29,17 @@ def chatbot_page():
                         result = textprocessor.openai_text_generator(theme, args)
                     else:
                         result = "Veuillez spécifier un thème pour la commande /actu."
+                elif command == 'json':
+                    result = textprocessor.openai_jsonify_a_url(args)
                 else:
                     result = 'Commande non reconnue'
 
                 # Write result as text or as image
                 if result.startswith('https://'):
                     st.image(result)
+                elif result.startswith('{'):
+                    # Prettify json
+                    st.write(json.dumps(json.loads(result), indent=4))
                 else:
                     st.write(result)
             else:
