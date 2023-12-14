@@ -10,3 +10,4 @@ selenium~=4.16.0
 uvicorn~=0.24.0.post1
 fastapi~=0.105.0
 items~=0.6.5
+openai~=0.28.0

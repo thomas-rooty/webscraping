@@ -7,9 +7,6 @@ import pandas as pd
 def show_capybar_app():
   st.markdown("<h1 style='text-align: center;'>Cliquez sur le Capybara pour voir mon profil</h1>", unsafe_allow_html=True)
 
-  # Sidebar with links to other pages
-  st.sidebar.title("Capybar'App")
-
   # Banner image
   st.markdown(
     """
